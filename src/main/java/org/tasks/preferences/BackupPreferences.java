@@ -1,6 +1,7 @@
 package org.tasks.preferences;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import org.tasks.R;
@@ -33,6 +34,7 @@ public class BackupPreferences extends InjectingPreferenceActivity {
         findPreference(R.string.backup_BAc_import).setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent(BackupPreferences.this, FileExplore.class);
             intent.putExtra(FileExplore.EXTRA_START_PATH, preferences.getBackupDirectory().getAbsolutePath());
+            intent.putExtra(FileExplore.EXTRA_MIME, "text/xml");
             startActivityForResult(intent, REQUEST_PICKER);
             return false;
         });
@@ -55,7 +57,9 @@ public class BackupPreferences extends InjectingPreferenceActivity {
             }
         } else if (requestCode == REQUEST_PICKER) {
             if (resultCode == RESULT_OK) {
-                newImportTasksDialog(data.getStringExtra(FileExplore.EXTRA_FILE))
+                Uri uri = data.getParcelableExtra(FileExplore.EXTRA_URI);
+                String filename = data.getStringExtra(FileExplore.EXTRA_DISPLAY_NAME);
+                newImportTasksDialog(uri, filename)
                         .show(getFragmentManager(), FRAG_TAG_IMPORT_TASKS);
             }
         } else {

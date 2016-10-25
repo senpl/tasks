@@ -1,12 +1,12 @@
 package org.tasks.activities;
 
-import android.support.v4.app.FragmentManager;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentManager;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
@@ -140,11 +140,12 @@ public class AddAttachmentActivity extends InjectingAppCompatActivity implements
             finish();
         } else if (requestCode == REQUEST_STORAGE) {
             if (resultCode == RESULT_OK) {
-                String path = data.getStringExtra(FileExplore.EXTRA_FILE);
-                final String destination = copyToAttachmentDirectory(path);
+                Uri uri = data.getParcelableExtra(FileExplore.EXTRA_URI);
+                String displayName = data.getStringExtra(FileExplore.EXTRA_DISPLAY_NAME);
+                final String destination = copyToAttachmentDirectory(uri, displayName);
                 if (destination != null) {
-                    Timber.i("Copied %s to %s", path, destination);
-                    final String extension = destination.substring(path.lastIndexOf('.') + 1);
+                    Timber.i("Copied %s to %s", destination, destination);
+                    final String extension = destination.substring(destination.lastIndexOf('.') + 1);
                     Intent intent = new Intent();
                     intent.putExtra(EXTRA_PATH, destination);
                     intent.putExtra(EXTRA_TYPE, TaskAttachment.FILE_TYPE_IMAGE + extension);
@@ -186,22 +187,16 @@ public class AddAttachmentActivity extends InjectingAppCompatActivity implements
         fos.close();
     }
 
-    private String copyToAttachmentDirectory(String file) {
-        File src = new File(file);
-        if (!src.exists()) {
-            Toast.makeText(this, R.string.file_err_copy, Toast.LENGTH_LONG).show();
-            return null;
-        }
-
-        File dst = new File(preferences.getAttachmentsDirectory() + File.separator + src.getName());
+    private String copyToAttachmentDirectory(Uri source, String displayName) {
+        File dst = new File(preferences.getAttachmentsDirectory() + File.separator + displayName);
         try {
+            InputStream src = getContentResolver().openInputStream(source);
             AndroidUtilities.copyFile(src, dst);
         } catch (Exception e) {
             Timber.e(e, e.getMessage());
             Toast.makeText(this, R.string.file_err_copy, Toast.LENGTH_LONG).show();
             return null;
         }
-
         return dst.getAbsolutePath();
     }
 }

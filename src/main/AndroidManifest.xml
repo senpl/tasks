@@ -286,6 +286,18 @@
                 android:resource="@xml/file_provider_paths" />
         </provider>
 
+        <provider
+            android:name="org.tasks.backups.BackupsProvider"
+            android:authorities="org.tasks.backups"
+            android:exported="true"
+            android:grantUriPermissions="true"
+            android:permission="android.permission.MANAGE_DOCUMENTS"
+            android:enabled="@bool/isAtLeastKitKat">
+            <intent-filter>
+                <action android:name="android.content.action.DOCUMENTS_PROVIDER" />
+            </intent-filter>
+        </provider>
+
         <!-- ========================================================= Plugins = -->
 
         <activity

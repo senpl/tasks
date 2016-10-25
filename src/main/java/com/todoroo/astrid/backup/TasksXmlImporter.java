@@ -7,8 +7,10 @@ package com.todoroo.astrid.backup;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
 
@@ -30,12 +32,14 @@ import com.todoroo.astrid.tags.TaskToTagMetadata;
 
 import org.tasks.R;
 import org.tasks.dialogs.DialogBuilder;
+import org.tasks.injection.ForApplication;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -44,6 +48,7 @@ import timber.log.Timber;
 
 public class TasksXmlImporter {
 
+    private final Context context;
     private final TagDataDao tagDataDao;
     private final MetadataDao metadataDao;
     private final DialogBuilder dialogBuilder;
@@ -55,25 +60,28 @@ public class TasksXmlImporter {
     private int importCount = 0;
     private int skipCount = 0;
     private int errorCount = 0;
+    private String filename;
     private ProgressDialog progressDialog;
-    private String input;
+    private Uri uri;
 
     private void setProgressMessage(final String message) {
         handler.post(() -> progressDialog.setMessage(message));
     }
 
     @Inject
-    public TasksXmlImporter(TagDataDao tagDataDao, MetadataDao metadataDao,
+    public TasksXmlImporter(@ForApplication Context context, TagDataDao tagDataDao, MetadataDao metadataDao,
                             DialogBuilder dialogBuilder, TaskDao taskDao) {
+        this.context = context;
         this.tagDataDao = tagDataDao;
         this.metadataDao = metadataDao;
         this.dialogBuilder = dialogBuilder;
         this.taskDao = taskDao;
     }
 
-    public void importTasks(Activity activity, String input, ProgressDialog progressDialog) {
+    public void importTasks(Activity activity, Uri uri, String filename, ProgressDialog progressDialog) {
         this.activity = activity;
-        this.input = input;
+        this.uri = uri;
+        this.filename = filename;
         this.progressDialog = progressDialog;
 
         handler = new Handler();
@@ -90,9 +98,10 @@ public class TasksXmlImporter {
     private void performImport() throws IOException, XmlPullParserException {
         XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
         XmlPullParser xpp = factory.newPullParser();
-        xpp.setInput(new FileReader(input));
+        InputStream inputStream = context.getContentResolver().openInputStream(uri);
 
         try {
+            xpp.setInput(new InputStreamReader(inputStream));
             while (xpp.next() != XmlPullParser.END_DOCUMENT) {
                 String tag = xpp.getName();
                 if (xpp.getEventType() == XmlPullParser.END_TAG) {
@@ -124,6 +133,9 @@ public class TasksXmlImporter {
                     showSummary();
                 }
             });
+            if (inputStream != null) {
+                inputStream.close();
+            }
         }
     }
 
@@ -132,7 +144,7 @@ public class TasksXmlImporter {
         dialogBuilder.newDialog()
                 .setTitle(R.string.import_summary_title)
                 .setMessage(activity.getString(R.string.import_summary_message,
-                        input,
+                        filename,
                         r.getQuantityString(R.plurals.Ntasks, taskCount, taskCount),
                         r.getQuantityString(R.plurals.Ntasks, importCount, importCount),
                         r.getQuantityString(R.plurals.Ntasks, skipCount, skipCount),

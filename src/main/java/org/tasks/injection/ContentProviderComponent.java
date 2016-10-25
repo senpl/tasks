@@ -4,6 +4,8 @@ import com.todoroo.astrid.provider.Astrid2TaskProvider;
 import com.todoroo.astrid.provider.Astrid3ContentProvider;
 import com.todoroo.astrid.provider.SqlContentProvider;
 
+import org.tasks.backups.BackupsProvider;
+
 import dagger.Component;
 
 @ApplicationScope
@@ -17,4 +19,6 @@ public interface ContentProviderComponent {
     void inject(Astrid2TaskProvider astrid2TaskProvider);
 
     void inject(SqlContentProvider sqlContentProvider);
+
+    void inject(BackupsProvider backupsProvider);
 }

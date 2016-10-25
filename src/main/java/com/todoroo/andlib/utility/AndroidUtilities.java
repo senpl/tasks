@@ -16,7 +16,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -163,17 +162,11 @@ public class AndroidUtilities {
         }
     }
 
-    /**
-     * Copy a file from one place to another
-     * @throws Exception
-     */
-    public static void copyFile(File in, File out) throws Exception {
-        FileInputStream fis = new FileInputStream(in);
+    public static void copyFile(InputStream source, File out) throws Exception {
         FileOutputStream fos = new FileOutputStream(out);
         try {
-            copyStream(fis, fos);
+            copyStream(source, fos);
         } finally {
-            fis.close();
             fos.close();
         }
     }
