@@ -28,6 +28,7 @@ import org.tasks.locale.Locale;
 import org.tasks.preferences.DefaultFilterProvider;
 import org.tasks.preferences.Preferences;
 import org.tasks.receivers.CompleteTaskReceiver;
+import org.tasks.receivers.PostponeTaskReciver;
 import org.tasks.themes.ThemeCache;
 import org.tasks.themes.ThemeColor;
 import org.tasks.themes.WidgetTheme;
@@ -39,6 +40,7 @@ public class TasksWidget extends InjectingAppWidgetProvider {
   public static final String EDIT_TASK = "EDIT_TASK";
   public static final String EXTRA_FILTER_ID = "extra_filter_id";
   public static final String EXTRA_ID = "extra_id"; // $NON-NLS-1$
+  public static final String POSTPONE_TASK = "POSTPONE_TASK";
   private static final int flags = FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TOP;
   @Inject Preferences preferences;
   @Inject DefaultFilterProvider defaultFilterProvider;
@@ -76,6 +78,12 @@ public class TasksWidget extends InjectingAppWidgetProvider {
         editTaskIntent.setFlags(flags);
         context.startActivity(editTaskIntent);
         break;
+      case POSTPONE_TASK:
+        Intent postponeIntent = new Intent(context, PostponeTaskReciver.class);
+        postponeIntent.putExtra(CompleteTaskReceiver.TASK_ID, intent.getLongExtra(EXTRA_ID, 0));
+//        completionIntent.putExtra(CompleteTaskReceiver.TOGGLE_STATE, true);
+        context.sendBroadcast(postponeIntent);
+        break;
     }
   }
 
@@ -102,7 +110,7 @@ public class TasksWidget extends InjectingAppWidgetProvider {
   private RemoteViews createScrollableWidget(Context context, int id) {
     WidgetPreferences widgetPreferences = new WidgetPreferences(context, preferences, id);
     String filterId = widgetPreferences.getFilterId();
-    Intent rvIntent = new Intent(context, ScrollableWidgetUpdateService.class);
+    Intent rvIntent = new Intent(context, PostponeWidgetUpdateService.class);
     rvIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
     rvIntent.setData(Uri.parse(rvIntent.toUri(Intent.URI_INTENT_SCHEME)));
     WidgetTheme theme = themeCache.getWidgetTheme(widgetPreferences.getThemeIndex());

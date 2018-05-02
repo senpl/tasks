@@ -226,9 +226,13 @@
 
     <!-- ======================================================== Services = -->
 
+    <!--<service-->
+      <!--android:name=".widget.ScrollableWidgetUpdateService"-->
+      <!--android:permission="android.permission.BIND_REMOTEVIEWS"/>-->
+
     <service
-      android:name=".widget.ScrollableWidgetUpdateService"
-      android:permission="android.permission.BIND_REMOTEVIEWS"/>
+      android:name=".widget.PostponeWidgetUpdateService"
+        android:permission="android.permission.BIND_REMOTEVIEWS"/>
 
     <!-- ======================================================= Providers = -->
 
@@ -383,6 +387,14 @@
     </receiver>
 
     <receiver android:name=".receivers.CompleteTaskReceiver"/>
+
+    <receiver android:name=".receivers.MyPackageReplacedReceiver">
+      <intent-filter>
+        <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+      </intent-filter>
+    </receiver>
+
+    <receiver android:name=".receivers.PostponeTaskReciver"/>
 
     <receiver android:name=".receivers.MyPackageReplacedReceiver">
       <intent-filter>

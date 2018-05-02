@@ -22,12 +22,24 @@
     android:paddingLeft="@dimen/widget_padding"
     android:paddingRight="0dp"/>
 
+  <ImageView
+      android:id="@+id/widget_postpone_box"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_toEndOf="@id/widget_complete_box"
+      android:layout_toRightOf="@id/widget_complete_box"
+      android:paddingEnd="0dp"
+      android:paddingLeft="@dimen/widget_padding"
+      android:paddingRight="0dp"
+      android:paddingStart="@dimen/widget_padding" />
+
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_centerVertical="true"
-    android:layout_toEndOf="@id/widget_complete_box"
-    android:layout_toRightOf="@id/widget_complete_box"
+    android:layout_toEndOf="@id/widget_postpone_box"
+    android:layout_toRightOf="@id/widget_postpone_box"
     android:paddingTop="3dp"
     android:paddingBottom="3dp"
     android:orientation="vertical">

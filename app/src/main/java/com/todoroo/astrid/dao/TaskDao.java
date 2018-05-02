@@ -23,12 +23,16 @@ import com.todoroo.astrid.api.PermaSql;
 import com.todoroo.astrid.data.Task;
 import com.todoroo.astrid.helper.UUIDHelper;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import org.tasks.BuildConfig;
 import org.tasks.data.GoogleTaskAccount;
 import org.tasks.data.GoogleTaskList;
 import org.tasks.data.LimitOffsetDataSource;
 import org.tasks.jobs.AfterSaveIntentService;
+import org.tasks.time.DateTime;
+
 import timber.log.Timber;
 
 @Dao
@@ -197,6 +201,20 @@ public abstract class TaskDao {
       item.setCompletionDate(0L);
     }
 
+    save(item);
+  }
+
+  /** set postpone to tomorrow */
+  public void setPostponeTomorrow(Task item) {
+    DateTime taskOrginalDate=new DateTime(item.getDueDate());
+    int hours = taskOrginalDate.getHourOfDay(); // gets hour of day
+    int minutes = taskOrginalDate.getMinuteOfHour();
+    Date dt = new Date();
+    DateTime dtOrg = new DateTime(dt.getTime());
+    DateTime dtPlusOne = dtOrg.plusDays(1);
+    dtPlusOne = dtPlusOne.withHourOfDay(hours);
+    dtPlusOne = dtPlusOne.withMinuteOfHour(minutes);
+        item.setDueDateAdjustingHideUntil(dtPlusOne.getMillis());
     save(item);
   }
 

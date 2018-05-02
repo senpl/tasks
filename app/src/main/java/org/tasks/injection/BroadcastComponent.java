@@ -7,6 +7,7 @@ import org.tasks.notifications.NotificationClearedReceiver;
 import org.tasks.receivers.BootCompletedReceiver;
 import org.tasks.receivers.CompleteTaskReceiver;
 import org.tasks.receivers.MyPackageReplacedReceiver;
+import org.tasks.receivers.PostponeTaskReciver;
 import org.tasks.widget.TasksWidget;
 
 @Subcomponent(modules = BroadcastModule.class)
@@ -19,6 +20,8 @@ public interface BroadcastComponent {
   void inject(MyPackageReplacedReceiver myPackageReplacedReceiver);
 
   void inject(CompleteTaskReceiver completeTaskReceiver);
+
+  void inject(PostponeTaskReciver postponeTaskReceiver);
 
   void inject(BootCompletedReceiver bootCompletedReceiver);
 

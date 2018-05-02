@@ -3,6 +3,7 @@ package org.tasks.injection;
 import dagger.Component;
 import org.tasks.Tasks;
 import org.tasks.dashclock.DashClockExtension;
+import org.tasks.widget.PostponeWidgetUpdateService;
 import org.tasks.widget.ScrollableWidgetUpdateService;
 
 @ApplicationScope
@@ -14,6 +15,9 @@ public interface ApplicationComponent {
   void inject(Tasks tasks);
 
   void inject(ScrollableWidgetUpdateService scrollableWidgetUpdateService);
+
+  void inject(PostponeWidgetUpdateService scrollableWidgetUpdateService);
+
 
   ActivityComponent plus(ActivityModule module);
 
