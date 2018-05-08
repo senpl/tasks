@@ -64,9 +64,9 @@ android {
         googleplay {
             dimension 'store'
         }
-        amazon {
-            dimension 'store'
-        }
+//        amazon {
+//            dimension 'store'
+//        }
     }
 
     if (project.hasProperty('keyAlias') &&
@@ -176,7 +176,7 @@ dependencies {
     googleplayImplementation "com.google.android.gms:play-services-auth:${GPS_VERSION}"
     googleplayImplementation "com.google.android.gms:play-services-places:${GPS_VERSION}"
 
-    amazonImplementation "com.google.android.gms:play-services-analytics:${GPS_VERSION}"
+//    amazonImplementation "com.google.android.gms:play-services-analytics:${GPS_VERSION}"
 
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:${DAGGER_VERSION}"
     androidTestAnnotationProcessor "com.jakewharton:butterknife-compiler:${BUTTERKNIFE_VERSION}"
