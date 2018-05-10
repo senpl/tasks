@@ -16,7 +16,7 @@ import timber.log.Timber;
 public class PostponeTaskReciver extends InjectingBroadcastReceiver {
 
   public static final String TASK_ID = "id";
-  public static final String TOGGLE_STATE = "flip_state";
+//  public static final String TOGGLE_STATE = "flip_state";
 
   @Inject TaskDao taskDao;
 
@@ -25,7 +25,7 @@ public class PostponeTaskReciver extends InjectingBroadcastReceiver {
     super.onReceive(context, intent);
 
     long taskId = intent.getLongExtra(TASK_ID, 0);
-    boolean flipState = intent.getBooleanExtra(TOGGLE_STATE, false);
+//    boolean flipState = intent.getBooleanExtra(TOGGLE_STATE, false);
     Timber.i("Completing %s", taskId);
     Task task = taskDao.fetch(taskId);
     if (task != null) {

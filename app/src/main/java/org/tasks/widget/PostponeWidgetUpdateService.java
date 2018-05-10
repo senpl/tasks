@@ -14,6 +14,7 @@ import org.tasks.preferences.DefaultFilterProvider;
 import org.tasks.preferences.Preferences;
 import org.tasks.themes.ThemeCache;
 import org.tasks.ui.WidgetCheckBoxes;
+import org.tasks.ui.WidgetPostponeBoxes;
 
 import javax.inject.Inject;
 
@@ -24,6 +25,7 @@ public class PostponeWidgetUpdateService extends ScrollableWidgetUpdateService {
   @Inject SubtasksHelper subtasksHelper;
   @Inject DefaultFilterProvider defaultFilterProvider;
   @Inject WidgetCheckBoxes widgetCheckBoxes;
+  @Inject WidgetPostponeBoxes postponeCheckBoxes;
   @Inject ThemeCache themeCache;
   @Inject Locale locale;
 
@@ -61,6 +63,7 @@ public class PostponeWidgetUpdateService extends ScrollableWidgetUpdateService {
         taskDao,
         defaultFilterProvider,
         widgetCheckBoxes,
+        postponeCheckBoxes,
         themeCache);
   }
 }

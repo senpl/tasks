@@ -31,6 +31,7 @@ import org.tasks.preferences.Preferences;
 import org.tasks.themes.ThemeCache;
 import org.tasks.themes.WidgetTheme;
 import org.tasks.ui.WidgetCheckBoxes;
+import org.tasks.ui.WidgetPostponeBoxes;
 
 import timber.log.Timber;
 
@@ -40,6 +41,7 @@ import static com.todoroo.andlib.utility.AndroidUtilities.atLeastJellybeanMR1;
 class PostponeViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
   private final WidgetCheckBoxes checkBoxes;
+  private final WidgetPostponeBoxes postponeBox;
   private final ThemeCache themeCache;
   private final int widgetId;
   private final TaskDao taskDao;
@@ -68,6 +70,7 @@ class PostponeViewsFactory implements RemoteViewsService.RemoteViewsFactory {
       TaskDao taskDao,
       DefaultFilterProvider defaultFilterProvider,
       WidgetCheckBoxes checkBoxes,
+      WidgetPostponeBoxes postponeBox,
       ThemeCache themeCache) {
     this.subtasksHelper = subtasksHelper;
     this.preferences = preferences;
@@ -76,6 +79,7 @@ class PostponeViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     this.taskDao = taskDao;
     this.defaultFilterProvider = defaultFilterProvider;
     this.checkBoxes = checkBoxes;
+    this.postponeBox = postponeBox;
     this.themeCache = themeCache;
 
     widgetPreferences = new WidgetPreferences(context, preferences, widgetId);
@@ -144,6 +148,16 @@ class PostponeViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     }
   }
 
+  private Bitmap getPostponebox(Task task) {
+    if (task.isCompleted()) {
+      return postponeBox.getCompletedCheckbox(task.getPriority());
+    } else if (TextUtils.isEmpty(task.getRecurrence())) {
+      return postponeBox.getCheckBox(task.getPriority());
+    } else {
+      return postponeBox.getRepeatingCheckBox(task.getPriority());
+    }
+  }
+
   private RemoteViews buildUpdate(int position) {
     try {
       Task task = getTask(position);
@@ -194,7 +208,7 @@ class PostponeViewsFactory implements RemoteViewsService.RemoteViewsFactory {
       }
 
 //        if (showPostpone) {
-      row.setImageViewBitmap(R.id.widget_postpone_box, getCheckbox(task));
+      row.setImageViewBitmap(R.id.widget_postpone_box, getPostponebox(task));
 
       row.setViewVisibility(R.id.widget_postpone_box, View.VISIBLE);
       Intent postponeIntent = new Intent(TasksWidget.POSTPONE_TASK);
