@@ -68,10 +68,9 @@ public class WidgetConfigActivity extends InjectingPreferenceActivity
     Intent data = new Intent();
     data.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
     setResult(RESULT_OK, data);
-
     setupCheckbox(R.string.p_widget_show_due_date);
     setupCheckbox(R.string.p_widget_show_checkboxes);
-    setupCheckbox(R.string.p_widget_show_postpones);
+    setupCheckbox(R.string.p_widget_show_postpones, false);
     CheckBoxPreference showHeader = setupCheckbox(R.string.p_widget_show_header);
     CheckBoxPreference showSettings = setupCheckbox(R.string.p_widget_show_settings);
     showSettings.setDependency(showHeader.getKey());
@@ -145,10 +144,14 @@ public class WidgetConfigActivity extends InjectingPreferenceActivity
   }
 
   private CheckBoxPreference setupCheckbox(int resId) {
+    return setupCheckbox(resId,true);
+  }
+
+  private CheckBoxPreference setupCheckbox(int resId, boolean checked) {
     CheckBoxPreference preference = (CheckBoxPreference) findPreference(resId);
     String key = getString(resId) + appWidgetId;
     preference.setKey(key);
-    preference.setChecked(preferences.getBoolean(key, true));
+    preference.setChecked(preferences.getBoolean(key, checked));
     return preference;
   }
 
