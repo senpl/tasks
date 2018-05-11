@@ -75,4 +75,8 @@ class WidgetPreferences {
   public void setFilter(String filterPreferenceValue) {
     preferences.setString(getKey(R.string.p_widget_filter), filterPreferenceValue);
   }
+
+  boolean showPostpones() {
+    return preferences.getBoolean(getKey(R.string.p_widget_show_postpones), false);
+  }
 }

@@ -71,6 +71,7 @@ public class WidgetConfigActivity extends InjectingPreferenceActivity
 
     setupCheckbox(R.string.p_widget_show_due_date);
     setupCheckbox(R.string.p_widget_show_checkboxes);
+    setupCheckbox(R.string.p_widget_show_postpones);
     CheckBoxPreference showHeader = setupCheckbox(R.string.p_widget_show_header);
     CheckBoxPreference showSettings = setupCheckbox(R.string.p_widget_show_settings);
     showSettings.setDependency(showHeader.getKey());

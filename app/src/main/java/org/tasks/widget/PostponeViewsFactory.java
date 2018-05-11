@@ -53,7 +53,7 @@ class PostponeViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
   private boolean showDueDates;
   private boolean showCheckboxes;
-//  private boolean showPostpone;
+  private boolean showPostpone;
   private float textSize;
   private float dueDateTextSize;
   private String filterId;
@@ -207,7 +207,7 @@ class PostponeViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         row.setViewVisibility(R.id.widget_complete_box, View.GONE);
       }
 
-//        if (showPostpone) {
+        if (showPostpone) {
       row.setImageViewBitmap(R.id.widget_postpone_box, getPostponebox(task));
 
       row.setViewVisibility(R.id.widget_postpone_box, View.VISIBLE);
@@ -219,7 +219,7 @@ class PostponeViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 //            row.setOnClickFillInIntent(R.id.widget_complete_box, completeIntent);
 //        } else {
 //            row.setViewVisibility(R.id.widget_complete_box, View.GONE);
-//        }
+        }
 
       if (atLeastJellybeanMR1()) {
         row.setInt(
@@ -295,6 +295,7 @@ class PostponeViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     textColorSecondary = widgetTheme.getTextColorSecondary();
     showDueDates = widgetPreferences.showDueDate();
     showCheckboxes = widgetPreferences.showCheckboxes();
+    showPostpone = widgetPreferences.showPostpones();
     textSize = widgetPreferences.getFontSize();
     dueDateTextSize = Math.max(10, textSize - 2);
     filterId = widgetPreferences.getFilterId();
