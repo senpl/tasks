@@ -45,6 +45,10 @@
       android:key="@string/p_widget_show_checkboxes"
       android:title="@string/widget_show_checkboxes"/>
 
+    <CheckBoxPreference
+      android:key="@string/p_widget_show_postpones"
+      android:title="@string/widget_show_postpones"/>
+
   </PreferenceCategory>
 
 </PreferenceScreen>
