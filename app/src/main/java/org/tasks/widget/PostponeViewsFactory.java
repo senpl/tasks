@@ -207,19 +207,15 @@ class PostponeViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         row.setViewVisibility(R.id.widget_complete_box, View.GONE);
       }
 
-        if (showPostpone) {
-      row.setImageViewBitmap(R.id.widget_postpone_box, getPostponebox(task));
-
-      row.setViewVisibility(R.id.widget_postpone_box, View.VISIBLE);
-      Intent postponeIntent = new Intent(TasksWidget.POSTPONE_TASK);
-      postponeIntent.putExtra(TasksWidget.EXTRA_ID, taskId);
-      row.setOnClickFillInIntent(R.id.widget_postpone_box, postponeIntent);
-//            Intent completeIntent = new Intent(TasksWidget.COMPLETE_TASK);
-//            completeIntent.putExtra(TasksWidget.EXTRA_ID, taskId);
-//            row.setOnClickFillInIntent(R.id.widget_complete_box, completeIntent);
-//        } else {
-//            row.setViewVisibility(R.id.widget_complete_box, View.GONE);
-        }
+      if (showPostpone) {
+        row.setImageViewBitmap(R.id.widget_postpone_box, getPostponebox(task));
+        row.setViewVisibility(R.id.widget_postpone_box, View.VISIBLE);
+        Intent postponeIntent = new Intent(TasksWidget.POSTPONE_TASK);
+        postponeIntent.putExtra(TasksWidget.EXTRA_ID, taskId);
+        row.setOnClickFillInIntent(R.id.widget_postpone_box, postponeIntent);
+      } else {
+        row.setViewVisibility(R.id.widget_postpone_box, View.GONE);
+      }
 
       if (atLeastJellybeanMR1()) {
         row.setInt(
